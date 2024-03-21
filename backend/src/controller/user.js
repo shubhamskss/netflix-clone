@@ -53,10 +53,11 @@ let token=await jwt.sign({
     userId:checkExistingUser._id
 },'shubham kumar',{expiresIn:'2h'})
 // res.setHeader('x-api-token',token)
-res.status(201).cookie("token",token,{httpOnly:true}).json({
+res.status(201).json({
     message:`welcome back ${checkExistingUser.fullname}`,
     status:true,
-    user:checkExistingUser
+    user:checkExistingUser,
+    token:token
 })
     }
 catch(err){
