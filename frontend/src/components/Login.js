@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser,setLoading } from "../Redux/userSlice";
+import useIsTokenExpired from "../hooks/useIsTokenExpired";
 const Login=()=>{
     const [isLogin,setLogin]=useState(false);
     const [fullName,setFullName]=useState("")
@@ -14,10 +15,14 @@ const Login=()=>{
     const navigate=useNavigate()
     const dispatch=useDispatch()
     const isLoading=useSelector(store=>store.app.isLoading)
+    let userToken=localStorage.getItem("userToken")
+    var isValidToken=useIsTokenExpired(userToken)?false:true
+  
 
     const loginHandler=()=>{
         setLogin(!isLogin)
     }
+    
     const getInputData=async (e)=>{
         e.preventDefault()
         dispatch(setLoading(true))
@@ -31,10 +36,21 @@ const Login=()=>{
                     },
                     withCredentials:true
                 })
- if(response.data.status){toast.success(response.data.message)}
+            
+ if(response?.data?.status){toast.success(response.data.message)
+localStorage.setItem('userToken',response?.data?.token)
+localStorage.setItem('name',response?.data?.user?.fullname)
+}
+
  //dispatch action
  dispatch(setUser(response.data.user))
-navigate("/browse")            }
+ if(isValidToken){
+   
+    navigate("/browse") 
+    
+}
+// navigate("/browse")            
+}
             else{
             const user={fullName,Email,password}
             const response=await axios.post(`${API_END_POINT}/signup`,user,{
@@ -57,7 +73,7 @@ navigate("/browse")            }
             dispatch(setLoading(false))
         }
     }
-
+    
     return(<div >
     <Header/>
     <div className="absolute">

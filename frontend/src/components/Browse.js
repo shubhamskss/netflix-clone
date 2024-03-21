@@ -25,7 +25,7 @@ const Browse=()=>{
     useUpComingMovies()
     useTopRatedMovies()
     useEffect(()=>{
-        if(!user){navigate("/")}
+        if(!localStorage.getItem("userToken")){navigate("/")}
         
 
     })

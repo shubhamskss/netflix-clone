@@ -11,8 +11,8 @@ const VideoBackground = ({movieId,bool}) => {
         className={`${bool?"w-100%":"w-screen aspect-video"}`}//to show video full screen
         src={`https://www.youtube.com/embed/${trailer?.key}?si=FqLSOpWjE-tSkF92&autoplay=1&mute=1`}
         title="YouTube video player"
-        frameborder="0"
-        allowfullscreen
+        frameBorder="0"
+        allowFullScreen
       ></iframe>
     </div>
   );
